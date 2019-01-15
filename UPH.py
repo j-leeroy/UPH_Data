@@ -1,11 +1,10 @@
 import os
 import matplotlib.pyplot as plt
-#import csv
 import pandas as pd
 import glob
-#import numpy as np
 
-# This will join all pdf in the file into 1 connected file
+
+
 path = r'C:\Users\jlgar\Desktop\UPH_Data\CSVfiles'
 allFiles = glob.glob(os.path.join(path, "*.csv", ))
 
@@ -20,20 +19,20 @@ concatDF['UPH'] = concatDF['UPH'].astype(float)
 concatDF['IPH'] = concatDF['IPH'].astype(float)
 
 #Hardcoded the x-axis as a list of Weekending... In the future will add weekending to the end of each
-#pdf as a date stamp.
+#pdf as a date stamp, rather than hardcode the dates.
 WKE = ["9-24", "10-01", "10-08", "10-15"]
 
 #Make a Dataframe based on Users and UPH
 userData = concatDF[['User', 'UPH']]
 
-#Make a dictionary, the user being the key, and UPH as values
+#Make a dictionary out of the Dataframe, the User being the key, and UPH as values
 mydict = {}
 for index in range(len(userData)):
     currentid = userData.iloc[index, 0]
     currentvalue = userData.iloc[index, 1]
     mydict.setdefault(currentid, [])
     mydict[currentid].append(currentvalue)
-
+print(mydict)
 myDF = pd.DataFrame()
 #Convert the dictionary into a Dataframe with index being User
 myDF = pd.DataFrame.from_dict(mydict, orient='index', columns=WKE)
@@ -58,7 +57,6 @@ while choice != "quit":
     #Will not plot users with 1 UPH entry, needs fixing
 
 #Afer entering quit, will plot all Users. Not pretty, need to rework this.
-#Not
 for idx in range(len(myDF)):
     plt.plot(WKE, myDF.iloc[idx])
 
@@ -67,21 +65,4 @@ plt.ylabel("Units Per Hour")
 plt.xlabel("Weekending")
 
 plt.show()
-
-
-
-#print(mydict)
-# data = {"x": [], "y": [], "label": []}
-# for label, coord in mydict.items():
-#     if len(coord) < 4:
-#         for i in range(len(coord)):
-#             data["x"].append(WKE[i])
-#     else:
-#         data["x"].append(WKE)
-#     data["y"].append(coord)
-#     data["label"].append(label)
-#
-# print(data)
-
-
 
